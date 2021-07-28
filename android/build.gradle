@@ -1,0 +1,56 @@
+group 'io.jojodev.flutter.liquidcore'
+version '1.1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        //noinspection GradleDependency (Flutter requires <3.3.0 for now)
+        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader) }
+}
+def liquidCoreAndroidDir = localProperties.getProperty('liquidcore.androidDir')
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+    dependencies {
+        api 'androidx.annotation:annotation:1.1.0'
+        api 'androidx.legacy:legacy-support-v4:1.0.0'
+
+        if (liquidCoreAndroidDir != null) {
+            // Use local LiquidCore library.
+            //compileOnly 'com.github.LiquidPlayer:LiquidCore:0.6.2'
+            api project(':LiquidCoreAndroid')
+        } else {
+            api 'com.github.LiquidPlayer:LiquidCore:0.6.2'
+        }
+    }
+}
