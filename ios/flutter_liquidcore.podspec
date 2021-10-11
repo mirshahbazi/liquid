@@ -14,5 +14,5 @@ Node.js virtual machine for Android and iOS using the amazing https://github.com
   s.dependency 'LiquidCore', '~> 0.6'
   s.dependency 'Flutter'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '9.0'
 end
